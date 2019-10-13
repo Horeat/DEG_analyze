@@ -1,0 +1,151 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DEGs</title>
+    <link rel="stylesheet" href="/static/style/semantic.min.css">
+    <link rel="stylesheet" href="/static/style/icon.min.css">
+    <script src="/static/script/jquery.min.js"></script>
+    <script src="/static/script/semantic.min.js"></script>
+</head>
+
+<body>
+
+    <div class="ui sidebar left inverted vertical menu">
+        <!-- <div class="header item">
+    <img src="image/logo.jpg">
+  </div> -->
+        <a class="item" href="/home"><i class="home icon"></i> DEGs </a>
+        <a class="item" href="#"><i class="block layout icon"></i> other index </a>
+        <a class="item" href="#"><i class="smile icon"></i> other intex </a>
+    </div>
+
+
+
+    <div class="ui container">
+
+        <div class="ui menu">
+            <div class="ui item huge header">
+                <p>Welcome to DEGs platform</p>
+            </div>
+            <div class="right menu">
+
+            </div>
+        </div>
+
+
+            <div class="ui grid">
+                <!-- <div class="three wide column">
+                    <button class="ui basic button" type="button" id="button-add"><i class="bar chart icon"></i> upload
+                        your file
+                    </button>
+                </div> -->
+    
+                <div class="nine wide column">
+                    <form action="/upload" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="file" name="file" value="" />
+                        <button class="ui basic button" type="submit" id="button-output"><i class="add circle icon"></i>
+                            upload your file
+                        </button>
+                        <div class="ui left pointing green label">{{upload_res}}</div>
+                    </form>
+                </div>
+    
+            </div>
+
+
+        <div class="ui active green progress" data-percent="74">
+            <div class="bar">
+                <div class="progress"></div>
+            </div>
+            <div class="label">Uploading Files</div>
+            <p>{{size}}</p>
+        </div>
+
+        <div class="ui fluid form segment">
+            <div class="two fields">
+                <div class="field">
+                    <label>Control </label>
+                    <input placeholder="please input column name" type="text">
+                </div>
+                <div class="field">
+                    <label>Case </label>
+                    <input placeholder="please input column name" type="text">
+                </div>
+            </div>
+            <div class="ui submit button">Check</div>
+            <!-- <button onclick="zid()">test</button> -->
+        </div>
+
+
+        <div class="ui fluid form segment">
+            <form action="/cal_degs" method="POST">
+                {% csrf_token %}
+                <div class="two fields">
+                    <div class="field">
+                        <label>Please choose method</label>
+                        <select class="ui dropdown">
+                            <option value="">none</option>
+                            <option value="1">method1</option>
+                            <option value="0">method2</option>
+                        </select>
+                    </div>
+                </div>
+    
+    
+                <div class="two fields">
+                    <div class="field">
+                        <label>基因表达值阈值 </label>
+                        <input placeholder="please input a number" type="text" name="express_value">
+                    </div>
+                    <div class="field">
+                        <label>p-value阈值 </label>
+                        <input placeholder="please input a number" type="text" name="p_value">
+                    </div>
+                </div>
+                <button class="ui submit button">Down</button>
+            </form>
+        </div>
+
+
+        <button class="ui black button animated" tabindex="0" onclick="toggle()"
+            style="  position: fixed; top: 60px; left: 0px;">
+            <div class="visible content">
+
+                <i class="list layout icon"></i>
+            </div>
+            <div class="hidden content">
+                Menu
+            </div>
+        </button>
+    </div>
+
+
+
+    <script>
+        function toggle() {
+            $('.ui.sidebar').sidebar({
+                // context: 'body',
+                dimPage: true,
+                // onVisible: function() {
+                //     $('body').click(function(e){
+                //         this.unbind(e);
+                //     });
+                // },
+                // onShow: function() {
+                //     $('.ui.sidebar').css("z-index",999);
+                // },
+                // onHide: function() {
+                //     $('.ui.sidebar').css("z-index",1);
+                // }
+            }).sidebar('toggle');
+        }
+        $('select.dropdown')
+            .dropdown();
+    </script>
+</body>
+
+</html>
