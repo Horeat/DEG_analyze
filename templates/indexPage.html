@@ -36,25 +36,25 @@
         </div>
 
 
-            <div class="ui grid">
-                <!-- <div class="three wide column">
-                    <button class="ui basic button" type="button" id="button-add"><i class="bar chart icon"></i> upload
-                        your file
+        <div class="ui grid">
+            <!-- <div class="three wide column">
+                <button class="ui basic button" type="button" id="button-add"><i class="bar chart icon"></i> upload
+                    your file
+                </button>
+            </div> -->
+
+            <div class="nine wide column">
+                <form action="/upload" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="file" value="" />
+                    <button class="ui basic button" type="submit" id="button-output"><i class="add circle icon"></i>
+                        upload your file
                     </button>
-                </div> -->
-    
-                <div class="nine wide column">
-                    <form action="/upload" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input type="file" name="file" value="" />
-                        <button class="ui basic button" type="submit" id="button-output"><i class="add circle icon"></i>
-                            upload your file
-                        </button>
-                        <div class="ui left pointing green label">{{upload_res}}</div>
-                    </form>
-                </div>
-    
+                    <div class="ui left pointing green label">{{upload_res}}</div>
+                </form>
             </div>
+
+        </div>
 
 
         <div class="ui active green progress" data-percent="74">
@@ -66,18 +66,22 @@
         </div>
 
         <div class="ui fluid form segment">
-            <div class="two fields">
-                <div class="field">
-                    <label>Control </label>
-                    <input placeholder="please input column name" type="text">
+            <form action="/check_column" method="POST">
+                {% csrf_token %}
+                <div class="two fields">
+                    <div class="field">
+                        <label>Control </label>
+                        <input placeholder="please input column name" type="text" name="control">
+                    </div>
+                    <div class="field">
+                        <label>Case </label>
+                        <input placeholder="please input column name" type="text" name="case">
+                    </div>
                 </div>
-                <div class="field">
-                    <label>Case </label>
-                    <input placeholder="please input column name" type="text">
-                </div>
-            </div>
-            <div class="ui submit button">Check</div>
-            <!-- <button onclick="zid()">test</button> -->
+                <button class="ui submit button">Check</button>
+                <div class="ui left pointing green label">{{info}}</div>
+                <!-- <button onclick="zid()">test</button> -->
+            </form>
         </div>
 
 
@@ -88,7 +92,7 @@
                     <div class="field">
                         <label>Please choose method</label>
                         <select class="ui dropdown">
-                            <option value="">none</option>
+                            <option value="">default</option>
                             <option value="1">method1</option>
                             <option value="0">method2</option>
                         </select>
@@ -107,6 +111,7 @@
                     </div>
                 </div>
                 <button class="ui submit button">Down</button>
+                <div class="ui left pointing green label">{{feedback}}</div>
             </form>
         </div>
 

@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^$',view.home),
     path('admin/', admin.site.urls),
     url(r'^upload$',view.upload_csv),
-    url(r'^cal_degs$',view.cal_degs),
+    url(r'^check_column$',view.check_column),
+    url(r'^cal_degs$',view.cal_degs)
 ]
