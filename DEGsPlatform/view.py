@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.http import FileResponse
+from django.http import StreamingHttpResponse
 from django.views.decorators import csrf
 import pandas as pd
 #from .cal import IsColumnExist,SelectDeg
@@ -12,7 +12,7 @@ def home(request):
 
 def upload_csv(request):
     global file_in
-    data = {}   #????????
+    data = {}   
     if request.POST:
         data['upload_res'] = "upload success!"
         File = request.FILES["file"]
@@ -62,5 +62,21 @@ def cal_degs(request):
         #filtered_data = SelectDeg(gev_in,pv_in)
         num = filtered_data.shape[0]
         data['feedback'] = "We have select %d DE_genes" %num
-    return render(request,"indexPage.html",data)
+    return render(request,"outcomePage.html",data)
 
+
+def download_file(request):
+    def file_iterator(file_name,chunk_size=512):
+        with open(file_name, 'rb') as f:
+            if f:
+                yield f.read(chunk_size)
+                print ('下载完成')
+            else:
+                print ('未完成下载')
+
+    the_file_name = 'D:/cat.txt'
+    response = StreamingHttpResponse(file_iterator(the_file_name))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachement;filename="{0}"'.format(the_file_name)
+    return response
+ 
