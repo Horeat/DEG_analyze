@@ -34,17 +34,21 @@ def check_column(request):
         c = file_in.columns.values.tolist()
         if control_in in c:
             if case_in in c:
-                data['info'] = "Both columns are valid. Please proceed to the next step!"
+                data['info'] = "Both columns are valid. Please continue"
+                return render(request,"methodPage.html",data)
             else:
                 data['info'] = "Case column is not exist. Please check or reload file!"
+                return render(request,"indexPage.html",data)
         else:
             if case_in in c:
                 data['info'] = "Control column is not exist. Please check or reload file!"
+                return render(request,"indexPage.html",data)
             else:
                 data['info'] = "Both columns are not exist. Please check or reload file!"
+                return render(request,"indexPage.html",data)
 
         #data['info'] = IsColumnExist()
-    return render(request,"indexPage.html",data)
+
 
 
 def cal_degs(request):

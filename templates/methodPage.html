@@ -1,0 +1,58 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Methods</title>
+    <link rel="stylesheet" href="/static/style/semantic.min.css">
+    <link rel="stylesheet" href="/static/style/icon.min.css">
+    <script src="/static/script/jquery.min.js"></script>
+    <script src="/static/script/semantic.min.js"></script>
+</head>
+
+<body>
+
+    <div class="ui menu">
+        <div class="ui item huge header">
+            <p>Welcome to DEGs platform</p>
+        </div>
+        <div class="right menu">
+
+        </div>
+    </div>
+
+    <div class="ui left pointing green label">{{info}}</div>
+
+    <div class="ui fluid form segment">
+        <form action="/cal_degs" method="POST">
+            {% csrf_token %}
+            <div class="two fields">
+                <div class="field">
+                    <label>Please choose method</label>
+                    <select class="ui dropdown">
+                        <option value="">default</option>
+                        <option value="1">method1</option>
+                        <option value="0">method2</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="two fields">
+                <div class="field">
+                    <label>基因表达值阈值 </label>
+                    <input placeholder="please input a number" type="text" name="express_value">
+                </div>
+                <div class="field">
+                    <label>p-value阈值 </label>
+                    <input placeholder="please input a number" type="text" name="p_value">
+                </div>
+            </div>
+            <button class="ui submit button">Down</button>
+            <div class="ui left pointing green label">{{feedback}}</div>
+        </form>
+    </div>
+
+</body>
+
+</html>

@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Results</title>
-	</head>
-	<body>
-		<a href="/download">
-            <button class="btn bg-danger">点击下载结果</button>
-        </a>
-        <p>{{feedback}}</p>
-	</body>
+<head>
+	<meta charset="UTF-8">
+	<title>Results</title>
+	<link rel="stylesheet" href="/static/style/semantic.min.css">
+    <link rel="stylesheet" href="/static/style/icon.min.css">
+    <script src="/static/script/jquery.min.js"></script>
+    <script src="/static/script/semantic.min.js"></script>
+</head>
+
+<body>
+
+    <div class="ui menu">
+        <div class="ui item huge header">
+            <p>Welcome to DEGs platform</p>
+        </div>
+        <div class="right menu">
+
+        </div>
+    </div>
+
+    <div class="ui left pointing green label">{{feedback}}</div>
+
+	<a href="/download">
+		<button class="btn bg-danger">点击下载结果</button>
+	</a>
+
+</body>
 </html>
