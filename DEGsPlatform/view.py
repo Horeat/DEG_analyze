@@ -61,11 +61,12 @@ def cal_degs(request):
         pv_in = request.POST.get('p_value')
 
         #method:
-        filtered_data = file_in[(abs(file_in['A']-file_in['B']) > float(gev_in)) & (file_in['p_value'] < float(pv_in))]
+        filtered_data = file_in[(abs(file_in[control_in]-file_in[case_in]) > float(gev_in)) & (file_in['p_value'] < float(pv_in))]
         
         #filtered_data = SelectDeg(gev_in,pv_in)
         num = filtered_data.shape[0]
         data['feedback'] = "We have select %d DE_genes" %num
+        filtered_data.to_csv('D:/filtered_data.csv',index = False)
     return render(request,"outcomePage.html",data)
 
 
@@ -78,7 +79,7 @@ def download_file(request):
             else:
                 print ('未完成下载')
 
-    the_file_name = 'D:/cat.txt'
+    the_file_name = 'D:/filtered_data.csv'
     response = StreamingHttpResponse(file_iterator(the_file_name))
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachement;filename="{0}"'.format(the_file_name)

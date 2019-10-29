@@ -65,17 +65,19 @@
             <p>{{size}}</p>
         </div>
 
+        <img src="/static/images/sample.png">
+
         <div class="ui fluid form segment">
             <form action="/check_column" method="POST">
                 {% csrf_token %}
                 <div class="two fields">
                     <div class="field">
                         <label>Control </label>
-                        <input placeholder="please input column name" type="text" name="control">
+                        <input placeholder="please input column name. e.g. A" type="text" name="control">
                     </div>
                     <div class="field">
                         <label>Case </label>
-                        <input placeholder="please input column name" type="text" name="case">
+                        <input placeholder="please input column name. e.g. B" type="text" name="case">
                     </div>
                 </div>
                 <button class="ui submit button">Check</button>
