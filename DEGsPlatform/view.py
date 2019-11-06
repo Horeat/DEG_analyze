@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.http import StreamingHttpResponse
 from django.views.decorators import csrf
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 #from .cal import IsColumnExist,SelectDeg
 
 def home(request):
@@ -51,6 +53,84 @@ def check_column(request):
 
 
 
+def draw_pictures(data_file,filtered_data_file):
+    data_in = data_file
+    filtered_data_in = filtered_data_file
+    gene_data = data_in.loc[:,[control_in,case_in]]
+    filtered_gene_data = filtered_data_in.loc[:,[control_in,case_in]]
+
+    sns.set(style="whitegrid", context="notebook")
+
+    plt.figure(figsize=(6,4))   #箱图
+    plt.title('Box Chart of Original dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Group Name')
+    sns.boxplot(data = gene_data)
+    sns.swarmplot(data = gene_data,color = 'grey')
+    plt.savefig('./static/images/box1.png')
+
+    plt.figure(figsize=(6,4))   
+    plt.title('Box Chart of Filtered dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Group Name')
+    sns.boxplot(data = filtered_gene_data)
+    sns.swarmplot(data = filtered_gene_data,color = 'grey')
+    plt.savefig('./static/images/box2.png')
+
+
+    plt.figure(figsize=(6,4))   #散点图
+    plt.title('Scatter Chart of Original dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Group Name')
+    sns.scatterplot(x=[0 for i in range(gene_data.shape[0])] , y=list(gene_data.loc[:,control_in]))
+    sns.scatterplot(x=[1 for i in range(gene_data.shape[0])] , y=list(gene_data.loc[:,case_in]))
+    plt.xlim(-0.7,1.7)
+    plt.xticks([0,1], [control_in,case_in])
+    plt.savefig('./static/images/scatter1.png')
+
+    plt.figure(figsize=(6,4))  
+    plt.title('Scatter Chart of Filtered dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Group Name')
+    sns.scatterplot(x=[0 for i in range(filtered_gene_data.shape[0])] , y=list(filtered_gene_data.loc[:,control_in]))
+    sns.scatterplot(x=[1 for i in range(filtered_gene_data.shape[0])] , y=list(filtered_gene_data.loc[:,case_in]))
+    plt.xlim(-0.7,1.7)
+    plt.xticks([0,1], [control_in,case_in])
+    plt.savefig('./static/images/scatter2.png')
+
+
+    plt.figure(figsize=(6,4))   #折线图
+    plt.title('Line Chart of Original dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Index Of Gene')
+    sns.lineplot(x=[i+1 for i in range(gene_data.shape[0])] , y=list(gene_data.loc[:,control_in]) , label = 'Control')
+    sns.lineplot(x=[i+1 for i in range(gene_data.shape[0])] , y=list(gene_data.loc[:,case_in]) , label = 'Case')
+    plt.savefig('./static/images/line1.png')
+
+    plt.figure(figsize=(6,4))  
+    plt.title('Line Chart of Filtered dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Index Of Gene')
+    sns.lineplot(x=[i+1 for i in range(filtered_gene_data.shape[0])] , y=list(filtered_gene_data.loc[:,control_in]) , label = 'Control')
+    sns.lineplot(x=[i+1 for i in range(filtered_gene_data.shape[0])] , y=list(filtered_gene_data.loc[:,case_in]) , label = 'Case')
+    plt.savefig('./static/images/line2.png')
+
+
+    plt.figure(figsize=(6,4))   #热图
+    plt.title('Heat Map of Original dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Index Of Gene')
+    sns.heatmap(gene_data,annot=True)
+    plt.savefig('./static/images/heat1.png')
+
+    plt.figure(figsize=(6,4)) 
+    plt.title('Heat Map of Filtered dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Index Of Gene')
+    sns.heatmap(filtered_gene_data,annot=True)
+    plt.savefig('./static/images/heat2.png')
+
+
 def cal_degs(request):
     data  = {}
     gev_in = 0
@@ -67,6 +147,7 @@ def cal_degs(request):
         num = filtered_data.shape[0]
         data['feedback'] = "We have select %d DE_genes" %num
         filtered_data.to_csv('D:/filtered_data.csv',index = False)
+        draw_pictures(file_in,filtered_data)
     return render(request,"outcomePage.html",data)
 
 
@@ -84,4 +165,6 @@ def download_file(request):
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachement;filename="{0}"'.format(the_file_name)
     return response
+
+
  
