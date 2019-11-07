@@ -56,8 +56,10 @@ def check_column(request):
 def draw_pictures(data_file,filtered_data_file):
     data_in = data_file
     filtered_data_in = filtered_data_file
+    remaining_data_in = data_in[~data_in[data_in.columns.values.tolist()[0]].isin(filtered_data_in.loc[:,data_in.columns.values.tolist()[0]])]
     gene_data = data_in.loc[:,[control_in,case_in]]
     filtered_gene_data = filtered_data_in.loc[:,[control_in,case_in]]
+    remaining_gene_data = remaining_data_in.loc[:,[control_in,case_in]]
 
     sns.set(style="whitegrid", context="notebook")
 
@@ -70,12 +72,20 @@ def draw_pictures(data_file,filtered_data_file):
     plt.savefig('./static/images/box1.png')
 
     plt.figure(figsize=(6,4))   
-    plt.title('Box Chart of Filtered dataset')
+    plt.title('Box Chart of DEGs dataset')
     plt.ylabel('Gene Express Value')
     plt.xlabel('Group Name')
     sns.boxplot(data = filtered_gene_data)
     sns.swarmplot(data = filtered_gene_data,color = 'grey')
     plt.savefig('./static/images/box2.png')
+
+    plt.figure(figsize=(6,4))   
+    plt.title('Box Chart of Filtered dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Group Name')
+    sns.boxplot(data = remaining_gene_data)
+    sns.swarmplot(data = remaining_gene_data,color = 'grey')
+    plt.savefig('./static/images/box3.png')
 
 
     plt.figure(figsize=(6,4))   #散点图
@@ -89,7 +99,7 @@ def draw_pictures(data_file,filtered_data_file):
     plt.savefig('./static/images/scatter1.png')
 
     plt.figure(figsize=(6,4))  
-    plt.title('Scatter Chart of Filtered dataset')
+    plt.title('Scatter Chart of DEGs dataset')
     plt.ylabel('Gene Express Value')
     plt.xlabel('Group Name')
     sns.scatterplot(x=[0 for i in range(filtered_gene_data.shape[0])] , y=list(filtered_gene_data.loc[:,control_in]))
@@ -97,6 +107,16 @@ def draw_pictures(data_file,filtered_data_file):
     plt.xlim(-0.7,1.7)
     plt.xticks([0,1], [control_in,case_in])
     plt.savefig('./static/images/scatter2.png')
+
+    plt.figure(figsize=(6,4))  
+    plt.title('Scatter Chart of Filtered dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Group Name')
+    sns.scatterplot(x=[0 for i in range(remaining_gene_data.shape[0])] , y=list(remaining_gene_data.loc[:,control_in]))
+    sns.scatterplot(x=[1 for i in range(remaining_gene_data.shape[0])] , y=list(remaining_gene_data.loc[:,case_in]))
+    plt.xlim(-0.7,1.7)
+    plt.xticks([0,1], [control_in,case_in])
+    plt.savefig('./static/images/scatter3.png')
 
 
     plt.figure(figsize=(6,4))   #折线图
@@ -108,12 +128,20 @@ def draw_pictures(data_file,filtered_data_file):
     plt.savefig('./static/images/line1.png')
 
     plt.figure(figsize=(6,4))  
-    plt.title('Line Chart of Filtered dataset')
+    plt.title('Line Chart of DEGs dataset')
     plt.ylabel('Gene Express Value')
     plt.xlabel('Index Of Gene')
     sns.lineplot(x=[i+1 for i in range(filtered_gene_data.shape[0])] , y=list(filtered_gene_data.loc[:,control_in]) , label = 'Control')
     sns.lineplot(x=[i+1 for i in range(filtered_gene_data.shape[0])] , y=list(filtered_gene_data.loc[:,case_in]) , label = 'Case')
     plt.savefig('./static/images/line2.png')
+
+    plt.figure(figsize=(6,4))  
+    plt.title('Line Chart of Filtered dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Index Of Gene')
+    sns.lineplot(x=[i+1 for i in range(remaining_gene_data.shape[0])] , y=list(remaining_gene_data.loc[:,control_in]) , label = 'Control')
+    sns.lineplot(x=[i+1 for i in range(remaining_gene_data.shape[0])] , y=list(remaining_gene_data.loc[:,case_in]) , label = 'Case')
+    plt.savefig('./static/images/line3.png')
 
 
     plt.figure(figsize=(6,4))   #热图
@@ -124,11 +152,18 @@ def draw_pictures(data_file,filtered_data_file):
     plt.savefig('./static/images/heat1.png')
 
     plt.figure(figsize=(6,4)) 
-    plt.title('Heat Map of Filtered dataset')
+    plt.title('Heat Map of DEGs dataset')
     plt.ylabel('Gene Express Value')
     plt.xlabel('Index Of Gene')
     sns.heatmap(filtered_gene_data,annot=True)
     plt.savefig('./static/images/heat2.png')
+
+    plt.figure(figsize=(6,4)) 
+    plt.title('Heat Map of Filtered dataset')
+    plt.ylabel('Gene Express Value')
+    plt.xlabel('Index Of Gene')
+    sns.heatmap(remaining_gene_data,annot=True)
+    plt.savefig('./static/images/heat3.png')
 
 
 def cal_degs(request):
